@@ -19,20 +19,28 @@ Explanation: 342 + 465 = 807.
 #         self.val = val
 #         self.next = next
 class Solution:
-    def addTwoNumbers(self, l1, l2 ,c = 0):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
-        val = l1.val + l2.val + c
-        c = val // 10
-        ret = ListNode(val % 10 ) 
-        
-        if (l1.next != None or l2.next != None or c != 0):
-            if l1.next == None:
-                l1.next = ListNode(0)
-            if l2.next == None:
-                l2.next = ListNode(0)
-            ret.next = self.addTwoNumbers(l1.next,l2.next,c)
-        return ret
+    # Make the values in the list ints
+    def to_int(l: ListNode):
+        s = ''
+        while l != None:
+            s += str(l.val)
+            l = l.next
+        return int(s[::-1])
+
+    # Adds ints back to list
+    def to_list(n: int):
+        s = str(n)[::-1]
+        head = prev = None
+        for ch in s:
+            node = ListNode(int(ch))
+            if prev is not None:
+                prev.next = node
+            prev = node
+            if head is None:
+                head = prev
+        return head
+    
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        a = Solution.to_int(l1)
+        b = Solution.to_int(l2)
+        return Solution.to_list(a + b)
